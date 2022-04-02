@@ -38,7 +38,7 @@ menuask(A, V, _):-
 menuask(A,V,_):-
     alreadyasked(yes, A), !, fail.
 menuask(A, V, MenuList) :-
-    write('Do you '), write(A), write('?'), nl,
+    write('Do you'), write(A), write('?'), nl,
     write(MenuList), nl,
     read(X),
     check_val(X, A, V, MenuList),

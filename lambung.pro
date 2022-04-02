@@ -36,6 +36,7 @@ pertanyaan('Apakah anda merasakan kram di bagian perut?',kram).
 pertanyaan('Apakah dada anda terasa nyeri?',nyeri).
 pertanyaan('Apakah perut anda terasa panas?', panas).
 pertanyaan('Apakah anda merasa asam saat menelan sesuatu?', telan).
+
 aturan(1,maag_kronis):-
 observation(perut),
 observation(makan),
