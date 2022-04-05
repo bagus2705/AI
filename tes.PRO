@@ -1,162 +1,55 @@
 % Start Rules (Knowledge Base)
 /* Knowledge Base */
-penyakit(maag_kronis):-
-perut(yes),
-makan(yes),
-muntah(yes),
+penyakit(maag):-
+sakit_perut(yes),
 mual(yes),
-kram(yes),
-nyeri(yes),
-panas(yes),
-telan(yes).
-penyakit(maag_akut):-
-perut(yes),
-makan(yes),
-muntah(yes),
-mual(yes),
-kram(yes),
-nyeri(no),
-panas(no),
-telan(yes).
-penyakit(maag_ringan):-
-perut(yes),
-makan(yes),
-muntah(no),
-mual(yes),
-kram(yes),
-nyeri(no),
-panas(no),
-telan(no).
-penyakit(maag_sedang):-
-perut(yes),
-makan(yes),
-muntah(yes),
-mual(yes),
-kram(yes),
-nyeri(no),
-panas(no),
-telan(no).
-penyakit(gastritis):-
-perut(no),
-makan(yes),
-muntah(yes),
-mual(yes),
-kram(no),
-nyeri(yes),
-panas(yes),
-telan(no).
-penyakit(tukak_lambung):-
-perut(no),
-makan(yes),
-muntah(yes),
-mual(yes),
-kram(yes),
-nyeri(no),
-panas(no),
-telan(no).
+muntah(yes).
 penyakit(polip_lambung):-
-perut(no),
-makan(no),
-muntah(no),
-mual(yes),
+sakit_perut(no),
 kram(no),
-nyeri(yes),
-panas(no),
-telan(no).
-penyakit(gerd):-
-perut(yes),
-makan(yes),
-muntah(no),
-mual(yes),
-kram(yes),
-nyeri(no),
-panas(no),
-telan(yes).
-penyakit(infek_lambung):-
-perut(yes),
-makan(yes),
-muntah(no),
-mual(yes),
-kram(no),
-nyeri(no),
-panas(no),
-telan(no).
-penyakit(asam_lambung):-
-perut(yes),
-makan(yes),
-muntah(no),
-mual(no),
-kram(no),
-nyeri(no),
-panas(no),
-telan(no).
-penyakit(usus_buntu):-
-perut(yes),
-makan(no),
-muntah(yes),
-mual(yes),
-kram(no),
-nyeri(no),
-panas(no),
-telan(no).
-penyakit(sembelit):-
-perut(yes),
-makan(no),
-muntah(no),
-mual(no),
-kram(no),
-nyeri(no),
-panas(no),
-telan(no).
-penyakit(disentri):-
-perut(no),
-makan(no),
-muntah(no),
-mual(no),
-kram(yes),
-nyeri(no),
-panas(no),
-telan(no).
+nyeri(yes).
 penyakit(masuk_angin):-
-perut(no),
-makan(no),
-muntah(no),
-mual(yes),
+sakit_perut(no),
 kram(yes),
-nyeri(no),
-panas(no),
-telan(no).
+kurang_nafsu_makan(no).
 penyakit(sehat):-
-perut(no),
-makan(no),
-muntah(no),
-mual(no),
+sakit_perut(no),
 kram(no),
-nyeri(no),
-panas(no),
-telan(no).
+nyeri(no).
+penyakit(tukak_lambung):-
+sakit_perut(no),
+kram(yes),
+kurang_nafsu_makan(yes).
+penyakit(gerd):-
+sakit_perut(yes),
+mual(yes),
+muntah(no).
+penyakit(asam_lambung):-
+sakit_perut(yes),
+mual(no),
+kurang_nafsu_makan(yes).
+penyakit(sembelit):-
+sakit_perut(yes),
+mual(no),
+kurang_nafsu_makan(no).
 % End Rules (Knowledge Base)
  
 % Start User Interface
 /* Asking the user */
 diagnosa(X):- 
     menuask(diagnosa, X, [yes, no]).
-perut(X):- 
-    menuask(perut, X, [yes, no]).
-makan(X):- 
-    menuask(makan, X, [yes, no]).
-muntah(X):- 
-    menuask(muntah, X, [yes, no]).
-mual(X):- 
-    menuask(mual, X, [yes, no]).
+sakit_perut(X):- 
+    menuask(sakit_perut, X, [yes, no]).
 kram(X):- 
     menuask(kram, X, [yes, no]).
+mual(X):- 
+    menuask(mual, X, [yes, no]).
+muntah(X):- 
+    menuask(muntah, X, [yes, no]).
+kurang_nafsu_makan(X):- 
+    menuask(kurang_nafsu_makan, X, [yes, no]).
 nyeri(X):- 
     menuask(nyeri, X, [yes, no]).
-panas(X):- 
-    menuask(panas, X, [yes, no]).
-telan(X):- 
-    menuask(telan, X, [yes, no]).    
  
 /* Menus for user & Remembering the answer*/
 menuask(A, V, _):-
@@ -165,7 +58,7 @@ menuask(A, V, _):-
 menuask(A,V,_):-
     alreadyasked(yes, A), !, fail.
 menuask(A, V, MenuList) :-
-    write('Apakah Kamu'),write(' '),write(A), write('?'), nl,
+    write('Apakah Kamu mengalami'),write(' '),write(A), write('?'), nl,
     write(MenuList), nl,
     read(X),
     check_val(X, A, V, MenuList),
@@ -191,10 +84,10 @@ member(X,[_|T]):-member(X,T).
 top_goal(X) :- penyakit(X). 
  
 solve :-
-    abolish(known,8),
-    abolish(alreadyasked,7),
+    abolish(known,3),
+    abolish(alreadyasked,2),
     top_goal(X),
-    write('Penyakit kamu adalah'), write(X), nl.
+    write('Penyakit kamu adalah'),write(' '),write(X), nl.
 solve :-
     write('Penyakit kamu tidak ada di data '), nl. 
  
